@@ -1,0 +1,295 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "tailwindcss";
+
+:root,
+[data-bs-theme="light"] {
+  --mpms-bg: #f8fafc;
+  --mpms-surface: rgba(255, 255, 255, 0.92);
+  --mpms-surface-subtle: rgba(241, 245, 249, 0.85);
+  --mpms-border: rgba(226, 232, 240, 0.85);
+  --mpms-text: #0f172a;
+  --mpms-text-muted: #475569;
+  --mpms-accent: #0284c7;
+  --mpms-accent-hover: #0369a1;
+  --mpms-navy: #0f172a;
+  --mpms-card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+}
+
+[data-bs-theme="dark"] {
+  --mpms-bg: #090e1a;
+  --mpms-surface: rgba(17, 24, 39, 0.88);
+  --mpms-surface-subtle: rgba(30, 41, 59, 0.80);
+  --mpms-border: rgba(30, 41, 59, 0.85);
+  --mpms-text: #f8fafc;
+  --mpms-text-muted: #94a3b8;
+  --mpms-accent: #38bdf8;
+  --mpms-accent-hover: #0284c7;
+  --mpms-navy: #1e293b;
+  --mpms-card-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.45);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--mpms-bg);
+  color: var(--mpms-text);
+  transition: background-color 180ms cubic-bezier(0.16, 1, 0.3, 1), color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-x: hidden;
+  margin: 0;
+}
+
+[data-bs-theme="dark"] body {
+  letter-spacing: 0.01em;
+}
+
+.font-display {
+  font-family: 'Syne', 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-mono-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Custom Theme-Aware Surfaces */
+.mpms-surface {
+  background-color: var(--mpms-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--mpms-border);
+  color: var(--mpms-text);
+}
+
+.mpms-surface-subtle {
+  background-color: var(--mpms-surface-subtle);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--mpms-border);
+  color: var(--mpms-text);
+}
+
+.mpms-input {
+  background-color: var(--mpms-surface) !important;
+  border: 1px solid var(--mpms-border) !important;
+  color: var(--mpms-text) !important;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.925rem;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.mpms-input:focus {
+  border-color: var(--mpms-accent) !important;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15) !important;
+  outline: none;
+}
+
+.mpms-input::placeholder {
+  color: var(--mpms-text-muted) !important;
+  opacity: 0.7;
+}
+
+/* High-density Data Tables */
+.mpms-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--mpms-text);
+}
+
+.mpms-table th {
+  background-color: var(--mpms-surface-subtle);
+  color: var(--mpms-text-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--mpms-border);
+  white-space: nowrap;
+}
+
+.mpms-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--mpms-border);
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+
+.mpms-table tbody tr {
+  transition: background-color 140ms ease;
+}
+
+.mpms-table tbody tr:hover {
+  background-color: var(--mpms-surface-subtle);
+}
+
+/* Print-friendly Report Styling */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .mpms-surface,
+  .mpms-surface-subtle {
+    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+  }
+}
+
+/* =========================================================
+   ANIMATED STARS & CIRCLES BACKGROUND SYSTEM
+   ========================================================= */
+
+@keyframes mpms-twinkle {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.9));
+  }
+}
+
+@keyframes mpms-twinkle-gold {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+    filter: drop-shadow(0 0 7px rgba(251, 191, 36, 0.9));
+  }
+}
+
+@keyframes mpms-float-slow {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(30px, -45px) rotate(12deg);
+  }
+  66% {
+    transform: translate(-25px, -70px) rotate(-8deg);
+  }
+}
+
+@keyframes mpms-float-reverse {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-35px, 50px) scale(1.08);
+  }
+}
+
+@keyframes mpms-rotate-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mpms-rotate-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes mpms-pulse-ring {
+  0%, 100% {
+    transform: scale(0.96);
+    opacity: 0.25;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.55;
+  }
+}
+
+@keyframes mpms-shooting-star {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-40deg) scaleX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+    transform: translateX(-50px) translateY(45px) rotate(-40deg) scaleX(1);
+  }
+  30% {
+    opacity: 0;
+    transform: translateX(-260px) translateY(220px) rotate(-40deg) scaleX(1.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-260px) translateY(220px) rotate(-40deg) scaleX(0);
+  }
+}
+
+.mpms-twinkle {
+  animation: mpms-twinkle 3s ease-in-out infinite;
+}
+
+.mpms-twinkle-gold {
+  animation: mpms-twinkle-gold 4.2s ease-in-out infinite;
+}
+
+.mpms-float-slow {
+  animation: mpms-float-slow 22s ease-in-out infinite;
+}
+
+.mpms-float-reverse {
+  animation: mpms-float-reverse 26s ease-in-out infinite;
+}
+
+.mpms-rotate-slow {
+  animation: mpms-rotate-slow 50s linear infinite;
+}
+
+.mpms-rotate-reverse {
+  animation: mpms-rotate-reverse 40s linear infinite;
+}
+
+.mpms-pulse-ring {
+  animation: mpms-pulse-ring 6s ease-in-out infinite;
+}
+
+.mpms-shooting-star-1 {
+  animation: mpms-shooting-star 9s linear infinite;
+}
+
+.mpms-shooting-star-2 {
+  animation: mpms-shooting-star 14s linear infinite 5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mpms-twinkle,
+  .mpms-twinkle-gold,
+  .mpms-float-slow,
+  .mpms-float-reverse,
+  .mpms-rotate-slow,
+  .mpms-rotate-reverse,
+  .mpms-pulse-ring,
+  .mpms-shooting-star-1,
+  .mpms-shooting-star-2 {
+    animation: none !important;
+  }
+}
+

@@ -1,39 +1,52 @@
 import React, { useMemo } from 'react';
-import { useTheme } from '../context/ThemeContext.js';
+import { useTheme } from '../context/ThemeContext.jsx';
 
-interface StarItem {
-  id: number;
-  top: number; // percentage
-  left: number; // percentage
-  size: number; // px
-  type: 'cross' | 'dot' | 'sparkle';
-  color: 'cyan' | 'gold' | 'white' | 'purple';
-  delay: number; // seconds
-  duration: number; // seconds
-}
-
-interface CircleOrb {
-  id: number;
-  top: number;
-  left: number;
-  size: number;
-  color: string;
-  blur: number;
-  animationClass: string;
-  opacity: number;
-}
-
-export const AnimatedBackground: React.FC = () => {
+export const AnimatedBackground = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
-  // Deterministic star generation for smooth rendering without layout shifts
-  const stars: StarItem[] = useMemo(() => {
-    const items: StarItem[] = [];
-    const colors: ('cyan' | 'gold' | 'white' | 'purple')[] = ['cyan', 'gold', 'white', 'purple'];
-    const types: ('cross' | 'dot' | 'sparkle')[] = ['cross', 'dot', 'sparkle', 'dot', 'cross'];
+  // 1. Bubbles: Rising translucent iridescent soap/glass bubbles
+  const bubbles = useMemo(() => {
+    const list = [];
+    const configs = [
+      { left: 4, size: 28, duration: 18, delay: 0 },
+      { left: 11, size: 48, duration: 22, delay: 3 },
+      { left: 18, size: 20, duration: 16, delay: 7 },
+      { left: 25, size: 64, duration: 26, delay: 1 },
+      { left: 32, size: 36, duration: 20, delay: 9 },
+      { left: 39, size: 22, duration: 15, delay: 4 },
+      { left: 46, size: 56, duration: 24, delay: 11 },
+      { left: 53, size: 30, duration: 19, delay: 6 },
+      { left: 60, size: 72, duration: 28, delay: 2 },
+      { left: 67, size: 24, duration: 17, delay: 8 },
+      { left: 74, size: 50, duration: 23, delay: 13 },
+      { left: 81, size: 34, duration: 21, delay: 5 },
+      { left: 88, size: 62, duration: 25, delay: 10 },
+      { left: 94, size: 26, duration: 16, delay: 12 },
+      { left: 8, size: 40, duration: 21, delay: 14 },
+      { left: 22, size: 18, duration: 14, delay: 16 },
+      { left: 42, size: 44, duration: 23, delay: 15 },
+      { left: 58, size: 22, duration: 17, delay: 18 },
+      { left: 78, size: 42, duration: 22, delay: 17 },
+      { left: 91, size: 32, duration: 19, delay: 19 },
+    ];
 
-    // 48 distributed stars
+    return configs.map((c, i) => ({
+      id: i,
+      left: c.left,
+      size: c.size,
+      duration: c.duration,
+      delay: c.delay,
+      highlightSize: Math.max(3, Math.round(c.size * 0.22)),
+    }));
+  }, []);
+
+  // 2. Stars: Twinkling 4-point cross and dot stars
+  const stars = useMemo(() => {
+    const items = [];
+    const colors = ['cyan', 'gold', 'white', 'purple'];
+    const types = ['cross', 'dot', 'sparkle', 'dot', 'cross'];
+
     const coordinates = [
       { top: 6, left: 8 },
       { top: 12, left: 24 },
@@ -101,8 +114,8 @@ export const AnimatedBackground: React.FC = () => {
     return items;
   }, []);
 
-  // Ambient floating glowing orbs (circles)
-  const orbs: CircleOrb[] = useMemo(() => {
+  // 3. Ambient Floating Glowing Circles/Orbs
+  const orbs = useMemo(() => {
     if (isDark) {
       return [
         {
@@ -223,7 +236,6 @@ export const AnimatedBackground: React.FC = () => {
           opacity: 0.6,
         }}
       >
-        {/* Orbital Satellite Circle */}
         <div
           className="position-absolute rounded-circle"
           style={{
@@ -250,7 +262,6 @@ export const AnimatedBackground: React.FC = () => {
           opacity: 0.55,
         }}
       >
-        {/* Orbital Satellite Circle */}
         <div
           className="position-absolute rounded-circle"
           style={{
@@ -289,41 +300,7 @@ export const AnimatedBackground: React.FC = () => {
         }}
       />
 
-      {/* 4. LAYER: Floating Geometric Circles */}
-      <div
-        className="position-absolute rounded-circle mpms-float-slow"
-        style={{
-          top: '70%',
-          left: '68%',
-          width: '44px',
-          height: '44px',
-          border: isDark ? '1.5px solid rgba(56, 189, 248, 0.3)' : '1.5px solid rgba(2, 132, 199, 0.22)',
-          backgroundColor: isDark ? 'rgba(56, 189, 248, 0.04)' : 'rgba(2, 132, 199, 0.03)',
-        }}
-      />
-      <div
-        className="position-absolute rounded-circle mpms-float-reverse"
-        style={{
-          top: '12%',
-          left: '42%',
-          width: '32px',
-          height: '32px',
-          border: isDark ? '1.5px solid rgba(251, 191, 36, 0.32)' : '1.5px solid rgba(217, 119, 6, 0.22)',
-          backgroundColor: isDark ? 'rgba(251, 191, 36, 0.04)' : 'rgba(217, 119, 6, 0.03)',
-        }}
-      />
-      <div
-        className="position-absolute rounded-circle mpms-float-slow"
-        style={{
-          top: '84%',
-          left: '8%',
-          width: '56px',
-          height: '56px',
-          border: isDark ? '1.5px solid rgba(168, 85, 247, 0.28)' : '1.5px solid rgba(147, 51, 234, 0.18)',
-        }}
-      />
-
-      {/* 5. LAYER: Shooting Stars (Occasional animated comets) */}
+      {/* 4. LAYER: Shooting Stars (Occasional animated comets) */}
       <div
         className="position-absolute mpms-shooting-star-1"
         style={{
@@ -353,7 +330,7 @@ export const AnimatedBackground: React.FC = () => {
         }}
       />
 
-      {/* 6. LAYER: Twinkling & Shimmering Stars */}
+      {/* 5. LAYER: Twinkling & Shimmering Stars */}
       {stars.map((star) => {
         const isGold = star.color === 'gold';
         const isCyan = star.color === 'cyan';
@@ -391,14 +368,12 @@ export const AnimatedBackground: React.FC = () => {
                   opacity: isDark ? 0.85 : 0.6,
                 }}
               >
-                {/* 4-point Diamond Star */}
                 <path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z" />
               </svg>
             </div>
           );
         }
 
-        // Star dot / micro particle
         return (
           <div
             key={star.id}
@@ -418,6 +393,47 @@ export const AnimatedBackground: React.FC = () => {
           />
         );
       })}
+
+      {/* 6. LAYER: ANIMATED RISING BUBBLES WITH SPECULAR REFLECTIONS */}
+      {bubbles.map((b) => (
+        <div
+          key={b.id}
+          className="mpms-bubble"
+          style={{
+            left: `${b.left}%`,
+            width: `${b.size}px`,
+            height: `${b.size}px`,
+            animationDuration: `${b.duration}s`,
+            animationDelay: `${b.delay}s`,
+          }}
+        >
+          {/* Specular highlight crescent / glint on bubble surface */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '18%',
+              left: '20%',
+              width: `${b.highlightSize}px`,
+              height: `${b.highlightSize}px`,
+              borderRadius: '50%',
+              backgroundColor: isDark ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 255, 255, 0.95)',
+              boxShadow: '0 0 4px rgba(255, 255, 255, 0.8)',
+            }}
+          />
+          {/* Secondary subtle lower reflection */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '20%',
+              right: '22%',
+              width: `${Math.max(2, Math.round(b.highlightSize * 0.5))}px`,
+              height: `${Math.max(2, Math.round(b.highlightSize * 0.5))}px`,
+              borderRadius: '50%',
+              backgroundColor: isDark ? 'rgba(56, 189, 248, 0.5)' : 'rgba(255, 255, 255, 0.6)',
+            }}
+          />
+        </div>
+      ))}
     </div>
   );
 };

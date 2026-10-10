@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
-import { mpmsApi, PageItem } from '../services/api.js';
-import { PublicPageRoute } from '../components/Navbar.js';
-import { SmartImage } from '../components/SmartImage.js';
+import { mpmsApi } from '../services/api.js';
+import { SmartImage } from '../components/SmartImage.jsx';
 
-interface AboutPageProps {
-  onNavigate: (page: PublicPageRoute, param?: string) => void;
-}
-
-export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
-  const [pageData, setPageData] = useState<PageItem | null>(null);
+export const AboutPage = ({ onNavigate }) => {
+  const [pageData, setPageData] = useState(null);
 
   useEffect(() => {
     mpmsApi
@@ -22,7 +17,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   }, []);
 
   return (
-    <div className="py-5">
+    <div className="py-5" style={{ position: 'relative', zIndex: 1 }}>
       <div className="container-xl px-3 px-md-4">
         {/* Hero Header */}
         <div className="row align-items-center g-5 mb-5">
@@ -102,7 +97,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Core Pillars: Safe Handling, Customer-Focused Approach, Professional Team */}
+        {/* Core Pillars */}
         <div className="mpms-surface rounded-4 p-4 p-md-5 mb-4">
           <h2 className="font-display fw-bold fs-3 mb-4">
             Our 4 Pillars of Safe &amp; Reliable Relocation
@@ -154,3 +149,5 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
     </div>
   );
 };
+
+export default AboutPage;

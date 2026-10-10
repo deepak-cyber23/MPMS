@@ -1,7 +1,7 @@
 # MOVERS & PACKERS MANAGEMENT SYSTEM (MPMS)
 
 > **Move Smarter. Move Safer.**  
-> A Complete Full-Stack MERN Application (**MongoDB, Express.js, React.js, Node.js + Bootstrap 5**) featuring an **Animated Stars & Circles Ambient Background**, Interactive Three.js 3D Logistics Hero, Dynamic MongoDB Service Catalog, Quotation & Booking Engine, Consignment Milestone Tracker, and Enterprise Admin Console.
+> A Complete Full-Stack MERN Application (**MongoDB, Express.js, React.js, Node.js + Bootstrap 5**) built with **100% Pure JavaScript (`.js` & `.jsx`)** featuring an **Animated Bubbles, Stars & Circles Ambient Background**, Interactive Three.js 3D Logistics Hero, Dynamic MongoDB Service Catalog, Quotation & Booking Engine, Consignment Milestone Tracker, and Enterprise Admin Console.
 
 ---
 
@@ -9,9 +9,10 @@
 **Movers & Packers Management System (MPMS)** is an end-to-end full-stack web application designed for a modern relocation and logistics enterprise. It bridges the communication and operational gap between customers needing residential, commercial, or vehicular shifting and the movers & packers company coordinators.
 
 ### Key Highlights
-- **100% Native Node.js & Express.js Backend**: Built with standard JavaScript (`.js`) modules—no TypeScript compilation required to execute the backend.
+- **100% Pure JavaScript (`.js` & `.jsx`)**: Every single file across both frontend and backend is written in standard JavaScript (`.js` and `.jsx`)—no TypeScript files or compilation steps required.
+- **Native Node.js & Express.js Backend**: Built with clean ES Modules (`server.js`, `backend/server.js`, `backend/config/db.js`, `backend/models/*.js`, `backend/controllers/*.js`, `backend/routes/*.js`).
 - **Real MongoDB & Mongoose Integration**: Full document modeling with Mongoose schemas, indexes, validation, and auto-seeding. Supports local MongoDB Community Server, MongoDB Atlas, and standalone embedded fallback.
-- **Animated Stars & Circles Background**: High-performance CSS GPU-accelerated ambient universe featuring twinkling 4-point sparkle stars, glowing nebula circles/orbs, rotating geometric radar rings, concentric pulse circles, and diagonal shooting stars.
+- **Animated Bubbles, Stars & Circles Background**: High-performance CSS GPU-accelerated ambient universe featuring rising translucent iridescent bubbles with specular highlight glints, twinkling 4-point sparkle stars, glowing nebula circles/orbs, rotating geometric radar rings, and comets.
 - **Three.js 3D Hero Viewport**: Lightweight WebGL container truck and corrugated moving cargo simulation with play/pause and camera view toggles.
 - **Customer Relocation Engine**: Dynamic MongoDB service catalog, 11-field validated booking & tariff quotation system, unique Booking ID generation (`MPMS-2026-XXXX`), and live 4-stage tracking.
 - **JWT + Bcrypt Admin Console**: Protected admin dashboard with 9 live statistics cards, full CRUD on services, booking status progression, enquiry handling, customer history lookup, and print-ready MIS reports.
@@ -22,37 +23,42 @@
 
 | Layer | Technology | Description & Role |
 | :--- | :--- | :--- |
-| **Backend Runtime** | **Node.js (v18+)** | High-performance asynchronous JavaScript server runtime |
+| **Backend Runtime** | **Node.js (v18+)** | High-performance asynchronous JavaScript server runtime (`.js`) |
 | **Backend Framework** | **Express.js (v4.21+)** | RESTful routing, controllers, security middleware, and JSON APIs |
 | **Database** | **MongoDB & Mongoose (v8+)** | NoSQL document database with strict Mongoose schema validation |
-| **Frontend** | **React.js & JavaScript** | Component-driven Single Page Application (SPA) architecture |
+| **Frontend** | **React.js (Pure JavaScript JSX)** | Component-driven Single Page Application (`.jsx`) architecture |
 | **UI Framework** | **Bootstrap 5 & Tailwind CSS** | Responsive grid system, typography, modern utility classes |
-| **Ambient Visuals** | **Animated Stars & Circles + Three.js** | Twinkling stars, floating orbs, radar rings + 3D logistics hero |
+| **Ambient Visuals** | **Animated Bubbles, Stars & Circles** | Rising iridescent bubbles, twinkling stars, floating orbs |
 | **Security** | **Bcrypt.js & JSON Web Tokens (JWT)** | Salted password hashing, stateless Bearer token authorization |
 
 ---
 
-## 3. Animated Stars & Circles Background System
+## 3. Animated Bubbles, Stars & Circles Background System
 
-The application features a modern, responsive, and GPU-accelerated **Stars & Circles Visual Engine** (`src/components/AnimatedBackground.tsx` + `src/index.css`) that delivers a futuristic, high-tech logistics ambiance:
+The application features a modern, responsive, and GPU-accelerated **Visual Ambiance Engine** (`src/components/AnimatedBackground.jsx` + `src/index.css`):
 
 ### Visual Elements
-1. **Twinkling Stars & Sparkles**:
-   - 48+ mathematically distributed stars across the viewport.
+1. **Rising Translucent Bubbles (`mpms-bubble`)**:
+   - 20+ mathematically distributed rising bubbles of varying diameters (18px to 72px).
+   - Realistic liquid/glass bubble physics: subtle wobble animation (`mpms-bubble-wobble`) and smooth vertical ascent (`mpms-bubble-rise`).
+   - Dual specular light highlights: white curved reflection glint at top-left and subtle secondary reflection at bottom-right for a true 3D soap/glass bubble effect.
+   - Iridescent radial gradient luster in both light and dark themes.
+2. **Twinkling Stars & Sparkles**:
+   - 48+ distributed stars across the viewport.
    - 4-point SVG cross sparkle stars that pulsate with glowing cyan, golden, and purple luminescence.
    - Micro glowing star points that shimmer at randomized intervals (`mpms-twinkle`, `mpms-twinkle-gold`).
    - Diagonal shooting stars / comets that periodically streak across the night sky.
-2. **Floating Glowing Circles & Orbs**:
+3. **Floating Glowing Circles & Orbs**:
    - Large ambient orbs (320px–520px) with soft radial gradients and backdrop blur (`filter: blur(60px)`).
    - Gentle floating keyframe motion (`mpms-float-slow` and `mpms-float-reverse`) creating visual depth.
-3. **Geometric Radar Rings & Tech Circles**:
+4. **Geometric Radar Rings & Tech Circles**:
    - Concentric dashed circles with orbital satellite dots that rotate continuously (`mpms-rotate-slow`, `mpms-rotate-reverse`).
    - Pulsing concentric rings (`mpms-pulse-ring`) inspired by real-time fleet GPS radar sweeps.
-4. **Theme Adaptation & Glassmorphism**:
-   - **Dark Mode**: Cosmic deep night sky (`#090e1a`) with electric cyan, purple, and gold shimmering stars.
-   - **Light Mode**: Crisp ethereal sky with subtle pastel blue and amber ambient orbs and delicate stars.
-   - **Backdrop Blur**: Content surfaces utilize `rgba(..., 0.88)` with `backdrop-filter: blur(12px)` so the stars and circles gently drift behind cards without impeding legibility.
-5. **Zero Interaction Interference**:
+5. **Theme Adaptation & Glassmorphism**:
+   - **Dark Mode**: Cosmic deep night sky (`#090e1a`) with electric cyan, purple, and gold shimmering stars and neon bubbles.
+   - **Light Mode**: Crisp ethereal sky with subtle pastel blue and amber ambient orbs and crystalline bubbles.
+   - **Backdrop Blur**: Content surfaces utilize `rgba(..., 0.88)` with `backdrop-filter: blur(12px)` so bubbles and stars gently drift behind cards without impeding legibility.
+6. **Zero Interaction Interference**:
    - Styled with `pointer-events: none` and `z-index: 0` so form inputs, buttons, and navigation remain 100% clickable.
    - Respects user accessibility preferences via `@media (prefers-reduced-motion: reduce)`.
 

@@ -251,18 +251,13 @@ export const AdminPortal = ({
     setLoginError(null);
     setLoggingIn(true);
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: loginEmail,
-          password: loginPassword,
-          loginType: "admin"
-        })
+      const data = await mpmsApi.login({
+        email: loginEmail,
+        password: loginPassword,
+        loginType: "admin"
       });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || "Invalid credentials");
+      if (!data || !data.success) {
+        throw new Error((data && data.message) || "Invalid credentials");
       }
       setAdminSession(data.token, data.admin);
       showToast("Authenticated successfully via JWT.");
@@ -2277,16 +2272,8 @@ export const AdminPortal = ({
       e.preventDefault();
       if (!adminToken) return;
       try {
-        const res = await fetch("/api/auth/profile", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${adminToken}`
-          },
-          body: JSON.stringify(profileForm)
-        });
-        const data = await res.json();
-        if (!res.ok || !data.success) throw new Error(data.message);
+        const data = await mpmsApi.updateProfile(profileForm, adminToken);
+        if (!data || !data.success) throw new Error((data && data.message) || "Failed to update profile");
         updateAdminUser(data.admin);
         showToast("Admin profile updated in MongoDB.");
       } catch (err) {
@@ -2366,20 +2353,12 @@ export const AdminPortal = ({
         return;
       }
       try {
-        const res = await fetch("/api/auth/change-password", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${adminToken}`
-          },
-          body: JSON.stringify({
-            currentPassword: passwordForm.currentPassword,
-            newPassword: passwordForm.newPassword
-          })
-        });
-        const data = await res.json();
-        if (!res.ok || !data.success) throw new Error(data.message);
-        showToast(data.message);
+        const data = await mpmsApi.changePassword({
+          currentPassword: passwordForm.currentPassword,
+          newPassword: passwordForm.newPassword
+        }, adminToken);
+        if (!data || !data.success) throw new Error((data && data.message) || "Failed to change password");
+        showToast(data.message || "Password updated successfully.");
         setPasswordForm({
           currentPassword: "",
           newPassword: "",

@@ -11,6 +11,7 @@ import PageModel from '../models/Page.js';
 
 const DATA_DIR = path.resolve(process.cwd(), 'backend', 'data');
 const DB_FILE = path.join(DATA_DIR, 'mpms_mongodb_collections.json');
+const TMP_FILE = path.join('/tmp', 'mpms_mongodb_collections.json');
 
 let useLiveMongo = false;
 let memoryStore = {
@@ -30,8 +31,14 @@ const saveToDisk = () => {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
     fs.writeFileSync(DB_FILE, JSON.stringify(memoryStore, null, 2), 'utf-8');
-  } catch (err) {
-    console.error('[MPMS Store] Failed to persist collection data:', err);
+  } catch (_err) {
+    // If the local directory is read-only (such as in Netlify Functions / AWS Lambda), persist to /tmp
+    try {
+      fs.writeFileSync(TMP_FILE, JSON.stringify(memoryStore, null, 2), 'utf-8');
+    } catch (tmpErr) {
+      // In-memory store continues to function even if filesystem write is restricted
+      console.warn('[MPMS Store] Operating with memory store:', tmpErr.message);
+    }
   }
 };
 
@@ -476,9 +483,10 @@ export const initializeStore = async (liveMongo) => {
     return;
   }
 
-  if (fs.existsSync(DB_FILE)) {
+  const existingFile = fs.existsSync(TMP_FILE) ? TMP_FILE : fs.existsSync(DB_FILE) ? DB_FILE : null;
+  if (existingFile) {
     try {
-      const raw = fs.readFileSync(DB_FILE, 'utf-8');
+      const raw = fs.readFileSync(existingFile, 'utf-8');
       const parsed = JSON.parse(raw);
       if (parsed && Array.isArray(parsed.services) && parsed.services.length > 0) {
         memoryStore = parsed;

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { API_BASE } from '../services/api.js';
 
 const AuthContext = createContext({
   adminToken: null,
@@ -54,7 +55,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (adminToken) {
-      fetch('/api/auth/me', {
+      fetch(`${API_BASE}/auth/me`, {
         headers: { Authorization: `Bearer ${adminToken}` },
       })
         .then((res) => res.json())
@@ -87,7 +88,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logoutAdmin = () => {
-    fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+    fetch(`${API_BASE}/auth/logout`, { method: 'POST' }).catch(() => {});
     setAdminToken(null);
     setAdminUser(null);
     try {
@@ -106,7 +107,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logoutCustomer = () => {
-    fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+    fetch(`${API_BASE}/auth/logout`, { method: 'POST' }).catch(() => {});
     setCustomerToken(null);
     setCustomerUser(null);
     try {

@@ -1,6 +1,7 @@
-const API_BASE = '/api';
+const rawApiBase = import.meta.env.VITE_API_URL || '/api';
+export const API_BASE = rawApiBase.replace(/\/+$/, '');
 
-async function request(endpoint, options = {}, token = null) {
+export async function request(endpoint, options = {}, token = null) {
   const headers = {
     'Content-Type': 'application/json',
     ...(options.headers || {}),
@@ -10,19 +11,52 @@ async function request(endpoint, options = {}, token = null) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${API_BASE}${endpoint}`, {
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const res = await fetch(`${API_BASE}${cleanEndpoint}`, {
     ...options,
     headers,
   });
 
-  const data = await res.json();
-  if (!res.ok || data.success === false) {
-    throw new Error(data.message || `API Error (${res.status})`);
+  const data = await res.json().catch(() => null);
+  if (!res.ok || (data && data.success === false)) {
+    throw new Error((data && data.message) || `API Error (${res.status})`);
   }
   return data;
 }
 
 export const mpmsApi = {
+  // Authentication
+  login: (credentials) =>
+    request('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+    }),
+
+  register: (payload) =>
+    request('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+
+  getMe: (token) => request('/auth/me', {}, token),
+
+  updateProfile: (payload, token) =>
+    request(
+      '/auth/profile',
+      { method: 'PUT', body: JSON.stringify(payload) },
+      token
+    ),
+
+  changePassword: (payload, token) =>
+    request(
+      '/auth/change-password',
+      { method: 'PUT', body: JSON.stringify(payload) },
+      token
+    ),
+
+  logout: () =>
+    request('/auth/logout', { method: 'POST' }).catch(() => {}),
+
   // Services
   getServices: (status) =>
     request(status ? `/services?status=${encodeURIComponent(status)}` : '/services'),

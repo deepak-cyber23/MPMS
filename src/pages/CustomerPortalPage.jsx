@@ -35,20 +35,14 @@ export const CustomerPortalPage = ({ onNavigate }) => {
     setLoadingAuth(true);
 
     try {
-      const endpoint = mode === 'login' ? '/api/auth/login' : '/api/auth/register';
       const body =
         mode === 'login'
           ? { email, password, loginType: 'customer' }
           : { name, email, mobile, city, address, password };
 
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Authentication failed.');
+      const data = mode === 'login' ? await mpmsApi.login(body) : await mpmsApi.register(body);
+      if (!data || !data.success) {
+        throw new Error((data && data.message) || 'Authentication failed.');
       }
       setCustomerSession(data.token, data.user);
     } catch (err) {
